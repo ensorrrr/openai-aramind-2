@@ -1,37 +1,5 @@
 <body>  
-  <div id="response">
-    <textarea id="generated-text"></textarea>
-  </div>
-
-  <form id="form" action="https://your-form-action-url" method="POST">
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title">
-
-    <label for="tone">Tone</label>
-    <select id="tone" name="tone">
-      <option value="formal">Formal</option>
-      <option value="informal">Informal</option>
-    </select>
-
-    <label for="relevantinfo">Relevant Information</label>
-    <textarea id="relevantinfo" name="relevantinfo"></textarea>
-
-    <label for="audience">Audience</label>
-    <select id="audience" name="audience">
-      <option value="general">General</option>
-      <option value="technical">Technical</option>
-    </select>
-
-    <label for="word-count">Word Count</label>
-    <input type="number" id="word-count" name="word-count" min="1" max="4000">
-
-    <label for="references">References</label>
-    <textarea id="references" name="references"></textarea>
-
-    <input type="submit" value="Generate Response">
-  </form>
-
-  <script>
+ <script>
     function toggleMenu() {
       var menu = document.getElementById("menu");
       if (menu.style.display === "block") {
@@ -79,3 +47,43 @@
       const generatedTextValue = await response.text();
 
       //
+ // Set the value of the generated text box to the generated text
+      generatedText.value = generatedTextValue;
+
+      // Add the generated text to the form as a hidden field
+      const inputField = document.createElement('input');
+      inputField.type = 'hidden';
+      inputField.name = 'output';
+      inputField.value = generatedTextValue;
+      form.appendChild(inputField);
+
+      // Submit the form using an XMLHttpRequest object
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', form.action);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // Redirect to the new page with the text result
+          window.location.href = xhr.responseText;
+        }
+      };
+      xhr.send(new FormData(form));
+
+      // Clear the input field
+      document.querySelector('#input').value = '';
+    });
+  </script>
+  
+  <script>
+  
+  function toggleMenu() {
+  var menu = document.getElementById("menu");
+  if (menu.style.display === "block") {
+    menu.style.display = "none";
+  } else {
+    menu.style.display = "block";
+  }
+}
+
+</script>
+</body>
