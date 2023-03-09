@@ -1,0 +1,81 @@
+<body>  
+  <div id="response">
+    <textarea id="generated-text"></textarea>
+  </div>
+
+  <form id="form" action="https://your-form-action-url" method="POST">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title">
+
+    <label for="tone">Tone</label>
+    <select id="tone" name="tone">
+      <option value="formal">Formal</option>
+      <option value="informal">Informal</option>
+    </select>
+
+    <label for="relevantinfo">Relevant Information</label>
+    <textarea id="relevantinfo" name="relevantinfo"></textarea>
+
+    <label for="audience">Audience</label>
+    <select id="audience" name="audience">
+      <option value="general">General</option>
+      <option value="technical">Technical</option>
+    </select>
+
+    <label for="word-count">Word Count</label>
+    <input type="number" id="word-count" name="word-count" min="1" max="4000">
+
+    <label for="references">References</label>
+    <textarea id="references" name="references"></textarea>
+
+    <input type="submit" value="Generate Response">
+  </form>
+
+  <script>
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      if (menu.style.display === "block") {
+        menu.style.display = "none";
+      } else {
+        menu.style.display = "block";
+      }
+    }
+
+    const webhookUrl = 'https://hook.us1.make.com/c97uwipcwqqfavb9kkirhaf8liutuxal';
+    const form = document.querySelector('#form');
+    const generatedText = document.querySelector('#generated-text');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault(); // prevent the form from submitting normally
+
+      // Get the user's input from the form
+      const title = document.querySelector('#title').value;
+      const tone = document.querySelector('#tone').value;
+      const relevantinfo = document.querySelector('#relevantinfo').value;
+      const audience = document.querySelector('#audience').value;
+      const wordCount = document.querySelector('#word-count').value;
+      const references = document.querySelector('#references').value;
+
+      // Call the Make.com webhook to generate a response
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: title,
+          tone: tone,
+          relevantinfo: relevantinfo,
+          audience: audience,
+          wordCount: wordCount,
+          references: references,
+          max_tokens: 4000,
+          n: 1,
+          temperature: 0.9,
+        }),
+      });
+
+      // Get the generated text from the response
+      const generatedTextValue = await response.text();
+
+      //
