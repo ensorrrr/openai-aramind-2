@@ -9,7 +9,7 @@
       }
     }
 
-    const webhookUrl = 'https://hook.us1.make.com/c97uwipcwqqfavb9kkirhaf8liutuxal';
+    const webhookUrl = 'https://hook.us1.make.com/jx6vayoife26xph29w2jjb6ipd72pmud';
     const form = document.querySelector('#form');
     const generatedText = document.querySelector('#generated-text');
 
