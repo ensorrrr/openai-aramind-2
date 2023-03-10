@@ -1,51 +1,66 @@
 <body>  
- <script>
- 
- 
+  <script>
+    const url = 'https://api.make.com/integration-2'; // replace YOUR-SCENARIO-NAME with the name of your Scenario
+    const apiKey = '78e6b90b-4709-4c5d-80ad-bb75aa703b54'; // replace YOUR-API-KEY with your Make.com API key
+    const headers = {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    };
 
-  
-  const url = 'https://api.make.com/integration-2'; // replace YOUR-SCENARIO-NAME with the name of your Scenario
-const apiKey = '78e6b90b-4709-4c5d-80ad-bb75aa703b54'; // replace YOUR-API-KEY with your Make.com API key
-const headers = {
-  'Authorization': `Bearer ${apiKey}`,
-  'Content-Type': 'application/json'
-};
-const form = document.querySelector('form');
-const titleInput = document.querySelector('#title');
-const toneInput = document.querySelector('#tone');
-const relevantInfoInput = document.querySelector('#relevantinfo');
-const audienceInput = document.querySelector('#audience');
-const wordCountInput = document.querySelector('#word-count');
-const referencesInput = document.querySelector('#references');
-const submitBtn = document.querySelector('button[type="submit"]');
+    const form = document.querySelector('form');
+    const titleInput = document.querySelector('#title');
+    const toneInput = document.querySelector('#tone');
+    const relevantInfoInput = document.querySelector('#relevantinfo');
+    const audienceInput = document.querySelector('#audience');
+    const wordCountInput = document.querySelector('#word-count');
+    const referencesInput = document.querySelector('#references');
+    const generatedText = document.querySelector('#output');
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-  const prompt = `${titleInput.value.trim()}|${toneInput.value.trim()}|${relevantInfoInput.value.trim()}|${audienceInput.value.trim()}|${wordCountInput.value.trim()}|${referencesInput.value.trim()}`;
+      const prompt = `${titleInput.value.trim()}|${toneInput.value.trim()}|${relevantInfoInput.value.trim()}|${audienceInput.value.trim()}|${wordCountInput.value.trim()}|${referencesInput.value.trim()}`;
 
-  const requestOptions = {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({
-      prompt: prompt,
-               max_tokens: 4000,
+      const requestOptions = {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          prompt: prompt,
+          max_tokens: 4000,
           n: 1,
           temperature: 0.9,
-    })
-  };
+        })
+      };
 
-  try {
-    const response = await fetch(url, requestOptions);
-    const data = await response.json();
-    console.log(data); // or display data in UI
-  } catch (error) {
-    console.error(error);
-  }
-});
- 
- 
- 
+      try {
+        const response = await fetch(url, requestOptions);
+        const generatedTextValue = await response.text();
+
+        // Set the value of the generated text box to the generated text
+        generatedText.value = generatedTextValue;
+
+        // Add the generated text to the form as a hidden field
+        const inputField = document.createElement('input');
+        inputField.type = 'hidden';
+        inputField.name = 'output';
+        inputField.value = generatedTextValue;
+        form.appendChild(inputField);
+
+        // Submit the form
+        form.submit();
+
+        // Clear the input fields
+        titleInput.value = '';
+        toneInput.value = '';
+        relevantInfoInput.value = '';
+        audienceInput.value = '';
+        wordCountInput.value = '';
+        referencesInput.value = '';
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
     function toggleMenu() {
       var menu = document.getElementById("menu");
       if (menu.style.display === "block") {
@@ -54,49 +69,5 @@ form.addEventListener('submit', async (event) => {
         menu.style.display = "block";
       }
     }
-
-  
-      // Get the generated text from the response
-      const generatedTextValue = await response.text();
-
-      //
- // Set the value of the generated text box to the generated text
-      generatedText.value = generatedTextValue;
-
-      // Add the generated text to the form as a hidden field
-      const inputField = document.createElement('input');
-      inputField.type = 'hidden';
-      inputField.name = 'output';
-      inputField.value = generatedTextValue;
-      form.appendChild(inputField);
-
-      // Submit the form using an XMLHttpRequest object
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', form.action);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-          // Redirect to the new page with the text result
-          window.location.href = xhr.responseText;
-        }
-      };
-      xhr.send(new FormData(form));
-
-      // Clear the input field
-      document.querySelector('#input').value = '';
-    });
   </script>
-  
-  <script>
-  
-  function toggleMenu() {
-  var menu = document.getElementById("menu");
-  if (menu.style.display === "block") {
-    menu.style.display = "none";
-  } else {
-    menu.style.display = "block";
-  }
-}
-
-</script>
 </body>
