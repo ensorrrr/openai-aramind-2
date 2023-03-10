@@ -1,6 +1,6 @@
 <body>  
   <script>
-    const url = 'https://api.make.com/integration-2'; // replace YOUR-SCENARIO-NAME with the name of your Scenario
+    const url = 'https://hook.us1.make.com/sz6cc6nq3k6nolpnpg2ymg8rxi43uits'; // replace YOUR-SCENARIO-NAME with the name of your Scenario
     const apiKey = '78e6b90b-4709-4c5d-80ad-bb75aa703b54'; // replace YOUR-API-KEY with your Make.com API key
     const headers = {
       'Authorization': `Bearer ${apiKey}`,
