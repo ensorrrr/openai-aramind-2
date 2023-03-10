@@ -29,7 +29,9 @@ form.addEventListener('submit', async (event) => {
     headers: headers,
     body: JSON.stringify({
       prompt: prompt,
-      /* any other relevant parameters */
+               max_tokens: 4000,
+          n: 1,
+          temperature: 0.9,
     })
   };
 
@@ -53,40 +55,7 @@ form.addEventListener('submit', async (event) => {
       }
     }
 
-    const webhookUrl = 'https://hook.us1.make.com/jx6vayoife26xph29w2jjb6ipd72pmud';
-    const form = document.querySelector('#form');
-    const generatedText = document.querySelector('#generated-text');
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault(); // prevent the form from submitting normally
-
-      // Get the user's input from the form
-      const title = document.querySelector('#title').value;
-      const tone = document.querySelector('#tone').value;
-      const relevantinfo = document.querySelector('#relevantinfo').value;
-      const audience = document.querySelector('#audience').value;
-      const wordCount = document.querySelector('#word-count').value;
-      const references = document.querySelector('#references').value;
-
-      // Call the Make.com webhook to generate a response
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: title,
-          tone: tone,
-          relevantinfo: relevantinfo,
-          audience: audience,
-          wordCount: wordCount,
-          references: references,
-          max_tokens: 4000,
-          n: 1,
-          temperature: 0.9,
-        }),
-      });
-
+  
       // Get the generated text from the response
       const generatedTextValue = await response.text();
 
