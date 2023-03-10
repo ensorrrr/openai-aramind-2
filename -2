@@ -3,43 +3,48 @@
  
  
 
+  
+  const url = 'https://api.make.com/integration-2'; // replace YOUR-SCENARIO-NAME with the name of your Scenario
+const apiKey = '78e6b90b-4709-4c5d-80ad-bb75aa703b54'; // replace YOUR-API-KEY with your Make.com API key
+const headers = {
+  'Authorization': `Bearer ${apiKey}`,
+  'Content-Type': 'application/json'
+};
 
-  const apiKey = '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';
-  const url = 'https://api.make.com/openai/scenario-name';
+const form = document.querySelector('form');
+const titleInput = document.querySelector('#title');
+const toneInput = document.querySelector('#tone');
+const relevantInfoInput = document.querySelector('#relevantinfo');
+const audienceInput = document.querySelector('#audience');
+const wordCountInput = document.querySelector('#word-count');
+const referencesInput = document.querySelector('#references');
+const submitBtn = document.querySelector('button[type="submit"]');
 
-  const form = document.querySelector('form');
-  const titleInput = document.querySelector('#title');
-  const toneInput = document.querySelector('#tone');
-  const relevantInfoInput = document.querySelector('#relevantinfo');
-  const audienceInput = document.querySelector('#audience');
-  const wordCountInput = document.querySelector('#word-count');
-  const referencesInput = document.querySelector('#references');
-  const submitBtn = document.querySelector('button[type="submit"]');
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
+  const prompt = `${titleInput.value.trim()}|${toneInput.value.trim()}|${relevantInfoInput.value.trim()}|${audienceInput.value.trim()}|${wordCountInput.value.trim()}|${referencesInput.value.trim()}`;
 
-    const prompt = `${titleInput.value.trim()}|${toneInput.value.trim()}|${relevantInfoInput.value.trim()}|${audienceInput.value.trim()}|${wordCountInput.value.trim()}|${referencesInput.value.trim()}`;
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      prompt: prompt,
+      /* any other relevant parameters */
+    })
+  };
 
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        /* any other relevant parameters */
-      })
-    };
-
-    fetch(url, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        /* update HTML with data */
-      })
-      .catch(error => console.error(error));
-  });
+  try {
+    const response = await fetch(apiURL, requestOptions);
+    const data = await response.json();
+    console.log(data); // or display data in UI
+  } catch (error) {
+    console.error(error);
+  }
+});
  
  
  
